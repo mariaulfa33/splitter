@@ -101,7 +101,7 @@ router.post('/:username/transaction', function(req, res) {
     name : req.body.name,
     price : req.body.price,
     deadline : req.body.deadline,
-    UserId : 3 //pake session
+    UserId : 2 //pake session
   })
 
   .then(transaction => {
@@ -145,8 +145,8 @@ router.post('/:username/transaction', function(req, res) {
 router.get('/:username/utang', function(req, res) {
   Model.Transaction.findAll({
     where : {
-      UserId : 3
-    }, include : [{model : Model.User}]
+      UserId : 2
+    }
   })
   .then(data => {
     res.send(data)

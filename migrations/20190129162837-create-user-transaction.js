@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       TransactionId: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       bill: {
         type: Sequelize.INTEGER

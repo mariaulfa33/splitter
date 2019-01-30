@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const UserTransaction = sequelize.define('UserTransaction', {
     UserId: DataTypes.INTEGER,
-    TransactionId: DataTypes.STRING,
+    TransactionId: DataTypes.INTEGER,
     bill: DataTypes.INTEGER,
     status: {
       type:   DataTypes.ENUM,
@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   UserTransaction.associate = function(models) {
     // associations can be defined here
-    // UserTransaction.belongsTo(models.Transaction)
-    // UserTransaction.belongsTo(models.User)
+    UserTransaction.belongsTo(models.Transaction)
+    UserTransaction.belongsTo(models.User)
    
   };
   return UserTransaction;
