@@ -14,7 +14,7 @@ router.get('/:username', function(req, res) {
   .then(user => {
     // res.send(user)
     if(user !== null) {
-      res.render('user-page', {user, edit : false, action})
+      res.render('user-page', {user, section : null, action})
     } else {
       res.redirect('/users/login')
     }
@@ -35,7 +35,7 @@ router.get('/:username/edit', function(req, res) {
   .then(user => {
     // res.send(data)
     if(user !== null) {
-      res.render('user-page', {user, edit: true, action:null})
+      res.render('user-page', {user, section:'edit', action:null})
     } else {
       res.redirect('/users/login')
     }
@@ -87,13 +87,76 @@ router.get('/:username/transaction', function(req, res) {
   Model.User.findAll()
   .then(data => {
     data = data.map(data => data.dataValues.username)
-    res.render('transaction', {user : data})
+    res.render('user-page', {user : data, section : 'transaction', action : ''})
   })
   .catch(err => {
     res.send(err)
   })
-  
 })
+
+router.post('/:username/transaction', function(req, res) {
+  //bikin transaksi
+  let transId = null
+  Model.Transaction.create({
+    name : req.body.name,
+    price : req.body.price,
+    deadline : req.body.deadline,
+    UserId : 3 //pake session
+  })
+
+  .then(transaction => {
+    // bikin User trasaction ke temen temenya
+    transId = transaction.dataValues.id
+    let userTransactions = []
+    for(let i = 0; i < req.body.teman.length; i++) {
+      if(req.body.teman[i] != '' || req.body.harga[i] != '') {
+        userTransactions.push(Model.User.findOne({
+          where : {
+            username : req.body.teman[i]
+          }, 
+          attributes : ['id']
+        })) 
+      }
+    }
+    return Promise.all(userTransactions)
+  })
+  .then((data) => {
+    //ini ngolah data supay dapet id nya
+    let userData = []
+    for(let i = 0; i < data.length; i++) {
+      userData.push({
+        UserId : data[i].dataValues.id,
+        TransactionId : transId,
+        bill : req.body.harga[i],
+        status : 'pending'
+      })
+    }
+    return Model.UserTransaction.bulkCreate(userData, {})
+  })
+  .then(() => {
+    //berhasil! tinggal kirim message lewat chat bot
+    res.redirect('/maria33')
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
+router.get('/:username/utang', function(req, res) {
+  Model.Transaction.findAll({
+    where : {
+      UserId : 3
+    }, include : [{model : Model.User}]
+  })
+  .then(data => {
+    res.send(data)
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
+
 
 
 

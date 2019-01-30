@@ -2,7 +2,7 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  
+  <%- include('./partials/autocomplete-style.ejs')%>
  <title> SPLITTER</title>
 </head>
 <body>
@@ -21,9 +21,11 @@
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/transaction'">nalangin</button></p>
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/utang'">List Utang</button></p>
 </div>
-  <%if(edit == true) { %>
+  <%if(section == 'edit') { %>
     <%- include('./partials/edit-user.ejs')%>
+  <%} else if(section == 'transaction') { %>
+    <%- include('./partials/transaction.ejs')%>
   <%}%>
-
+  
 </body>
 </html>
