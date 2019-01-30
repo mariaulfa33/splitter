@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  
+ <title> SPLITTER</title>
+</head>
+<body>
+<div class="w3-container">
+    <h2>WELCOME, ! </h2>
+    <h3> your balance : Rp <%= user.balance%>,-</h3>
+    <%if(action == 'topup') {%>
+      <form action="/<%=user.username%>/topup" method="POST">
+      <p><input class="w3-button w3-red" type="submit" value="Top Up"></p>
+      <input type="text" name="balance">
+    </form>
+    <%} else {%>
+      <p><button class="w3-button w3-red" onclick="window.location.href='/<%=user.username%>?action=topup'"> Top Up</button></p>
+    <%}%>
+    <p><button class="w3-button w3-red" onclick="window.location.href='/<%=user.username%>/edit'"> Edit Profile</button></p>
+    <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/transaction'">nalangin</button></p>
+    <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/utang'">List Utang</button></p>
+</div>
+  <%if(edit == true) { %>
+    <%- include('./partials/edit-user.ejs')%>
+  <%}%>
+
+</body>
+</html>

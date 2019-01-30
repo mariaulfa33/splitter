@@ -1,0 +1,24 @@
+<form action="/<%=user.username%>" method="POST">
+  First name:<br>
+  <input type="text" name="firstname" value="<%=user.firstname%>">
+  <br>
+  Last name:<br>
+  <input type="text" name="lastname" value="<%=user.lastname%>">
+  <br>
+  username:<br>
+  <input type="text" name="username" value="<%=user.username%>">
+  <br>
+  Email:<br>
+  <input type="text" name="email" value="<%=user.email%>">
+  <br>
+  birthday:<br>
+  <input type="date" id="start" name="birthday"
+         value="2018-07-22"
+         min="1800-01-01" max="2018-12-31">
+  <br><br>
+  <input type="submit" value="Edit profile"> 
+</form>
+<br>
+<button onclick="window.location.href='delete'"> DELETE</button>
+
+  

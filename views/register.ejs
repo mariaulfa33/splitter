@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+input{
+    margin: .4rem 0;
+}
+
+.note {
+    font-size: .8em;
+}
+  </style>
+  <%- include('./partials/navbar-style.ejs')%>
+</head>
+<body>
+    <%- include('./partials/navbar-general.ejs')%>
+<h2>REGISTER</h2>
+
+<form action="/users/register" method="POST">
+  First name:<br>
+  <input type="text" name="firstname">
+  <br>
+  Last name:<br>
+  <input type="text" name="lastname">
+  <br>
+  username:<br>
+  <input type="text" name="username">
+  <br>
+  Email:<br>
+  <input type="text" name="email">
+  <br>
+  password:<br>
+  <input type="password" name="password">
+  <br>
+  birthday:<br>
+  <input type="date" id="start" name="birthday"
+         value="2018-07-22"
+         min="1800-01-01" max="2018-12-31">
+  <br><br>
+  <input type="submit" value="register">
+
+</form>
+
+</body>
+</html>
