@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+input{
+    margin: .4rem 0;
+}
+
+.note {
+    font-size: .8em;
+}
+  </style>
+  <%- include('./partials/navbar-style.ejs')%>
+</head>
+<body>
+<%- include('./partials/navbar-general.ejs')%>
+<h2>Login</h2>
+<form action="/users/login" method="POST">
+  Email / username:<br>
+  <input type="text" name="unique">
+  <br>
+  password:<br>
+  <input type="password" name="password">
+  <br>
+  <br><br>
+  <input type="submit" value="login">
+</form>
+
+</body>
+</html>
