@@ -2,6 +2,8 @@ const router = require('express').Router()
 const Model = require('../../models')
 const getStatus = require('../../helpers/getAction')
 const middleware = require('../../helpers/middleware.js')
+const botSendMessage = require('../../helpers/telegram/telegramBot.js').botSendMessage;
+const changeToCurrency = require('../../helpers/changeToCurrency.js')
 
 router.get('/:username', middleware, function (req, res) {
   let action = req.query.action || null
@@ -43,6 +45,7 @@ router.get('/:username/edit', middleware,function(req, res) {
 })
 
 router.post('/:username/edit/:id', middleware,function(req, res) {
+  console.log(req.body, '13845713rahfdsclas')
   Model.User.update({
     firstname : req.body.firstname,
     lastname : req.body.lastname,
@@ -162,7 +165,12 @@ router.get('/:username/:idTrans/utang', middleware,function(req, res) {
       return tran
     })
     // res.send(newData)
-    res.render('list-teman-utang', {data : newData, getStatus, id: req.session.user.id, username : req.session.user.username})
+    res.render('list-teman-utang', {
+      data : newData, getStatus, 
+      id: req.session.user.id, 
+      username : req.session.user.username,
+      transId : req.params.idTrans
+    })
   })
   .catch(err => {
     res.send(err)
@@ -222,11 +230,29 @@ router.get('/:username/delete',middleware ,function(req, res) {
   })
 })
 
-router.get('/:username/:transId/reminder/', (req,res) => {
-  Model.User.findByPk(req.params.transId)
-  .then( data => {
-    bot.sendMessage(data.chatId, `${req.params.username} meminta anda untuk membayar hutang anda`)
+router.get('/:username/:transId/reminder/:temanId', (req,res) => {
+  let dataUser = undefined;
+  let dataTransaction = undefined;
+  Model.User.findByPk(req.params.temanId)
+  .then( dataUserFromFind => {
+    dataUser = dataUserFromFind;
+    return Model.Transaction.findByPk(req.params.transId)
   })
+  .then ( dataTransactionFromFind => { 
+    dataTransaction = dataTransactionFromFind;
+    return Model.UserTransaction.findOne({
+      where : {
+        UserId : dataUser.id,
+        TransactionId : dataTransaction.id
+      }
+    })
+  })
+  .then (data => {
+    let currencyFormat = changeToCurrency(data.bill);
+    botSendMessage(dataUser.chatId, `${req.params.username} meminta anda untuk membayar hutang anda pada transaksi ${dataTransaction.dataValues.name} sebesar ${currencyFormat}`);
+    res.redirect(`/${req.params.username}/${req.params.transId}/utang`)
+  })
+    // console.log('=======>>>', data.dataValues)
   .catch( err => {
     res.send(`error ${err}`)
   })

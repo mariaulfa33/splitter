@@ -20,8 +20,15 @@ tr:nth-child(even) {
 </style>
 </head>
 <body>
+<button onclick="goBack()">Go Back</button>
 
-<h2>HTML Table</h2>
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+
+<h2>List Hutang</h2>
 
 <table>
   <tr>
@@ -38,9 +45,9 @@ tr:nth-child(even) {
       <td><%=teman.status%></td>
       <td><%=teman.updatedAt%></td>
       <% if(getStatus(teman.status) == 'ingatkan') { %>
-        <td><a href="reminder/<%=teman.chatId%>"> ingatkan teman </a></td>
+        <td><a href="/<%=username%>/<%=transId%>/reminder/<%=teman.UserId%>"> ingatkan teman </a></td>
       <%} else if (getStatus(teman.status) == 'konfirmasi') { %>
-        <td> <a href="/<%=username%>/konfirmasi/<%=teman.id%>"> konfirmasi</a> </td>
+<td> <a href="/<%=username%>/<%=transId%>/konfirmasi/<%=teman.Userid%>"> konfirmasi</a> </td>
       <%} else { %>
         <td></td>
       <%} %>

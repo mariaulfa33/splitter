@@ -26,6 +26,7 @@
     "express-session": "^1.15.6",
     "pg": "^7.8.0",
     "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0",
     "telegraf": "^3.26.0"
   }
 }
