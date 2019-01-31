@@ -16,6 +16,7 @@ const middleware = require('../../helpers/middleware.js')
 
 router.get('/:username', middleware, function (req, res) {
   //namnti bisa pake session aja
+  console.log(req.session)
   let action = req.query.action || null
   Model.User.findOne({
     where : {
@@ -44,7 +45,6 @@ router.get('/:username/edit', middleware,function(req, res) {
     }
   })
   .then(user => {
-    // res.send(data)
     if(user !== null) {
       res.render('user-page', {user, section:'edit', action:null})
     } else {
@@ -171,7 +171,20 @@ router.get('/:username/:idTrans/utang', function(req, res) {
 })
 
 
+router.get('/:username/delete', function(req, res) {
+  Model.User.destroy({
+    where : {
+      username : req.params.username
+    }, individualHooks : true
+  })
+  .then(() => {
+    res.redirect('/')
+  })
+  .catch(err => {
+    res.send(err)
+  })
 
+})
 
 
 
