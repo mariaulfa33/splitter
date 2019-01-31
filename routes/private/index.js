@@ -159,7 +159,10 @@ router.get('/:username/:idTrans/utang', function(req, res) {
   })
 })
 
-
+router.get('/:username/logout', function(req,res) {
+  req.session.destroy()
+  res.redirect('/users/login')
+})
 
 
 
