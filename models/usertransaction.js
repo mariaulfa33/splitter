@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     bill: DataTypes.INTEGER,
     status: {
       type:   DataTypes.ENUM,
-      values: ['active', 'pending', 'deleted', 'paid', 'confirmed']
+      values: ['active', 'pending', 'deleted', 'paid']
     }
   }, {});
   UserTransaction.associate = function(models) {

@@ -19,7 +19,9 @@
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/transaction'">nalangin</button></p>
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/utang'">List Piutang</button></p>
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/piutang'">List Utang</button></p>
-  </div>
+
+
+</div>
   <%if(section == 'edit') { %>
   <%- include('./partials/edit-user.ejs')%>
   <%} else if(section == 'transaction') { %>

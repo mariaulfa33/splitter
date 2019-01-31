@@ -43,7 +43,9 @@
         <td><a href="<%=transaksi.id%>/aktif"> ya, saya ngutang</a> </td>
      <% } else if(transaksi.status == 'active') { %>
         <td><a href="<%=transaksi.id%>/bayar"> bayar </a> </td>
-      <%}%>
+      <%} else { %>
+        <td>bebas hutang</td>
+     <% }%>
     </tr>
   <%})%>
 </table>
