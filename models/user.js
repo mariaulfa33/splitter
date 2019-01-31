@@ -2,11 +2,74 @@
 const bcrypt = require('../helpers/getpass')
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    firstname: {
+      type : DataTypes.STRING,
+      validate : {
+        len : [1]
+      }
+    },
+    lastname: {
+      type : DataTypes.STRING,
+      validate : {
+        len : [1]
+      }
+    },
+    username: {
+      type : DataTypes.STRING,
+      validate : {
+        len : [1],
+        isUnique(value) {
+          return new Promise((resolve, reject) => {
+            User.findAll({
+              where : {
+                username : value
+              }
+            })
+            .then(data => {
+              if(data.length !== 0 && data[0].dataValues.id != this.id) {
+                throw new Error ('username already taken')
+              } else {
+                resolve()
+              }
+            })
+            .catch(err => {
+              reject(err)
+            })
+          })
+        }
+      }
+    },
+    email: {
+      type : DataTypes.STRING,
+      validate : {
+        isEmail : true,
+        isUnique(value) {
+          return new Promise((resolve, reject) => {
+            User.findAll({
+              where : {
+                email : value
+              }
+            })
+            .then(data => {
+              if(data.length !== 0 && data[0].dataValues.id != this.id) {
+                throw new Error ('Email already in use!')
+              } else {
+                resolve()
+              }
+            })
+            .catch(err => {
+              reject(err)
+            })
+          })
+        }
+      }
+    },
+    password: {
+      type : DataTypes.STRING,
+      validate : {
+        len : [5]
+      }
+    },
     birthday: DataTypes.DATE,
     chatId : DataTypes.STRING
   }, {

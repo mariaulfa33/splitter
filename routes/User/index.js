@@ -6,7 +6,8 @@ const Model = require('../../models')
 
 
 router.get('/register',function(req, res) {
-  res.render('register')
+  let msg = req.query.msg || null
+  res.render('register', {msg})
 })
 
 router.post('/register', function(req, res) {
