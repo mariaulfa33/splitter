@@ -14,7 +14,7 @@ router.get('/:username', middleware, function (req, res) {
   })
   .then(user => {
     if(user !== null) {
-      res.render('user-page', {user, section : null, action})
+      res.render('user-page', {user, section : null, action, username : req.session.user.username})
     } else {
       res.redirect('/users/login')
     }
@@ -34,7 +34,7 @@ router.get('/:username/edit', middleware,function(req, res) {
   })
   .then(user => {
     if(user !== null) {
-      res.render('user-page', {user, section:'edit', action:null})
+      res.render('user-page', {user, section:'edit', action:null, username : req.session.user.username})
     } else {
       res.redirect('/users/login')
     }
@@ -70,7 +70,7 @@ router.get('/:username/transaction', middleware,function(req, res) {
   Model.User.findAll()
   .then(data => {
     data = data.map(data => data.dataValues.username)
-    res.render('user-page', {user : data, section : 'transaction', action : ''})
+    res.render('user-page', {user : data, section : 'transaction', username : req.session.user.username})
   })
   .catch(err => {
     res.send(err)
@@ -142,9 +142,10 @@ router.get('/:username/piutang', middleware,function(req, res) {
   Model.UserTransaction.findAll({
     where : {
       UserId : req.session.user.id
-    }, include : [{model : Model.Transaction}]
+    }, include : [{model : Model.Transaction, include : [{model : Model.User}]}]
   })
   .then(data => {
+    // res.send(data)
     res.render('list-utang.ejs', {data, username: req.session.user.username})
   })
   .catch(err => {

@@ -10,7 +10,6 @@ const helpString = 'butuh bantuan? ini daftar perintah yang kamu bisa pakai\n/co
 
 const command = Markup.inlineKeyboard([
   Markup.callbackButton('lihat Chat Id', 'chatId'),
-  Markup.callbackButton('lihat total piutang', 'piutang'),
   Markup.callbackButton('lihat total tunggakan', 'tunggakan'),
   Markup.callbackButton('bantuan', 'help'),
   Markup.callbackButton('close', 'delete')
@@ -79,54 +78,35 @@ function startBot() {
 
 
 function tunggakanBot(){
-  let dataTransaksi = undefined;
-  let ctxs = undefined
-  let result = `list tunggakan kamu:\n`;
+  let result = 'total tunggakan :\n'
   bot.action('tunggakan', (ctx) => {
     Model.User.findOne({
-      where: {
+      where : {
         chatId: String(ctx.update.callback_query.from.id)
       }
     })
-    .then( dataUser => {
+    .then ( data => {
       return Model.UserTransaction.findAll({
-        where : { 
-          UserId : dataUser.id
-        }
-      })
-    })
-    .then( dataTransaksi => {
-      let newTrans = dataTransaksi.map(dataUser => {
-        return new Promise ((resolve, reject) => {
-          dataUser.getTransaction()
-          .then(data => {
-            dataUser.dataValues.transaction = data.dataValues.name
-            resolve(dataUser)
-          })
-          .catch(err => {
-            reject(err)
-          })
-        })
-      })
-      return Promise.all(newTrans)
+        where: {
+          UserId: data.id
+        },
+        include: [{
+          model: Model.Transaction,
+          include: [{
+            model: Model.User
+          }]
+        }]
+      })   
     })
     .then(data => {
-      console.log(data)
-      dataTransaksi = data;
-      return Model.User.findOne({
-        where : { 
-          id : dataTransaksi[0].UserId
-        }
-      })
-    })
-    .then( dataPengutang => {
+      // res.send(data)
       let count = 1;
-      console.log(dataPengutang,'========')
-      dataTransaksi.forEach( element => {
-        result += `${count}. ${element.dataValues.transaction} sebesar ${element.bill} kepada ${dataPengutang.username}`
-        count++;
+      data.forEach( e => {
+        console.log(e)
+        result += `${count}. ${e.dataValues.Transaction.dataValues.name} sebesar ${e.dataValues.bill} kepada ${e.dataValues.Transaction.dataValues.User.dataValues.firstname}`
+        count++
       })
-      ctx.reply(result);
+      ctx.reply(result)
     })
     .catch(err => {
       console.log(err)
@@ -134,60 +114,38 @@ function tunggakanBot(){
   })
 }
 
-function piutangBot() {
-  let dataTransaksi = undefined;
-  let result = `list piutang kamu:\n`;
-  bot.action('piutang', (ctx) => {
-    Model.User.findOne({
-      where: {
-        chatId: String(ctx.update.callback_query.from.id)
-      }
-    })
-    .then(dataUser => {
-      return Model.UserTransaction.findAll({
-        where: {
-          UserId: dataUser.id
-        }
-      })
-    })
-    .then(dataTransaksi => {
-      let newTrans = dataTransaksi.map(dataUser => {
-        return new Promise((resolve, reject) => {
-          dataUser.getTransaction()
-            .then(data => {
-              dataUser.dataValues.transaction = data.dataValues.name
-              resolve(dataUser)
-            })
-            .catch(err => {
-              reject(err)
-            })
-        })
-      })
-      return Promise.all(newTrans)
-    })
-    .then(data => {
-      console.log(data)
-      dataTransaksi = data;
-      return Model.User.findOne({
-        where: {
-          id: dataTransaksi[0].UserId
-        }
-      })
-    })
-    .then(dataPengutang => {
-      let count = 1;
-      console.log(dataPengutang, '========')
-      dataTransaksi.forEach(element => {
-        result += `${count}. ${element.dataValues.transaction} sebesar ${element.bill} kepada ${dataPengutang.username}`
-        count++;
-      })
-      ctx.reply(result);
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  })
-}
+// function piutangBot() {
+//   let result = `list piutang kamu:\n`;
+//   bot.action('piutang', (ctx) => {
+//      Model.User.findOne({
+//       where: {
+//         chatId: String(ctx.update.callback_query.from.id)
+//       }
+//     })
+//     .then(data => {
+//       return Model.Transaction.findAll({
+//         where: {
+//           UserId: data.id
+//         },
+//         include: [{
+//           model: Model.User
+//         }]
+//       })
+//     })
+//     .then(data => {
+//       // res.send(data)
+//       let count = 1;
+//       data.forEach(e => {
+//         console.log(e)
+//         result += `${count}. `
+//       })
+//       ctx.reply(result)
+//     })
+//     .catch(err => {
+//       console.log(err)
+//     })
+//  })
+// }
 
 
-module.exports = {startBot, tunggakanBot, botSendMessage, piutangBot};
+module.exports = {startBot, tunggakanBot, botSendMessage};

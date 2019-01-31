@@ -13,14 +13,10 @@
   <div class="w3-container" align="center">
     <h2>WELCOME,
       <%=user.firstname%>! </h2>
-    <h3> your balance : Rp
-      <%= user.balance%>,-</h3>
-    <p><button class="w3-button w3-red" onclick="window.location.href='/<%=user.username%>/edit'"> Edit Profile</button></p>
-    <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/transaction'">nalangin</button></p>
-    <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/utang'">List Piutang</button></p>
-    <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/piutang'">List Utang</button></p>
-
-
+    <p><button class="w3-button w3-red" onclick="window.location.href='/<%=username%>/edit'"> Edit Profile</button></p>
+    <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=username%>/transaction'">nalangin</button></p>
+    <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=username%>/utang'">List Piutang</button></p>
+    <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=username%>/piutang'">List Utang</button></p>
 </div>
   <%if(section == 'edit') { %>
   <%- include('./partials/edit-user.ejs')%>
