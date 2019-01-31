@@ -5,7 +5,7 @@ const middleware = require('../../helpers/middleware.js')
 
 router.get('/:username', middleware, function (req, res) {
   //namnti bisa pake session aja
-  console.log(req.session)
+  // console.log(req.session)
   let action = req.query.action || null
   Model.User.findOne({
     where : {
@@ -77,17 +77,15 @@ router.get('/:username/transaction', middleware,function(req, res) {
 })
 
 router.post('/:username/transaction', middleware,function(req, res) {
-  //bikin transaksi
   let transId = null
   Model.Transaction.create({
     name : req.body.name,
     price : req.body.price,
     deadline : req.body.deadline,
-    UserId : 1 //pake session
+    UserId : Number(req.session.user.id) //pake session
   })
 
   .then(transaction => {
-    // bikin User trasaction ke temen temenya
     transId = transaction.dataValues.id
     let userTransactions = []
     for(let i = 0; i < req.body.teman.length; i++) {
@@ -120,6 +118,7 @@ router.post('/:username/transaction', middleware,function(req, res) {
     res.redirect(`/${req.session.username}`)
   })
   .catch(err => {
+    // console.log(err)
     res.send(err)
   })
 })
@@ -127,40 +126,73 @@ router.post('/:username/transaction', middleware,function(req, res) {
 router.get('/:username/utang', middleware,function(req, res) {
   Model.Transaction.findAll({
     where : {
-      UserId : 1
+      UserId : req.session.user.id
     }
   })
   .then(data => {
-   
-    res.render('list-utang.ejs', {data})
+    res.render('list-piutang.ejs', {data, username: req.session.user.username})
   })
   .catch(err => {
     res.send(err)
   })
 })
 
-router.get('/:username/:idTrans/utang', function(req, res) {
+router.get('/:username/piutang', middleware,function(req, res) {
+  Model.UserTransaction.findAll({
+    where : {
+      UserId : req.session.user.id
+    }, include : [{model : Model.Transaction}]
+  })
+  .then(data => {
+    res.render('list-utang.ejs', {data, username: req.session.user.username})
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
+router.get('/:username/:idTrans/utang', middleware,function(req, res) {
   Model.UserTransaction.findAll({
     where : {
       TransactionId : req.params.idTrans
     },include : [{model : Model.User}]
   })
   .then(data => {
-   
     let newData = data.map(tran => {
       tran.dataValues.status = tran.getStatus(tran.dataValues.status)
       return tran
     })
-    res.render('list-teman-utang', {data : newData, getStatus})
+    res.render('list-teman-utang', {data : newData, getStatus, id: req.session.user.id})
   })
   .catch(err => {
-    console.log(err)
+    res.send(err)
+  })
+})
+
+router.get('/:username/:transId/aktif', function(req, res) {
+  Model.UserTransaction.update({
+    status : 'active'
+  }, {
+    where : {
+      id : Number(req.params.transId)
+    }
+  })
+  .then(() => {
+    res.redirect(`/${req.session.user.username}/piutang`)
+  })
+  .catch(err => {
     res.send(err)
   })
 })
 
 
-router.get('/:username/delete', function(req, res) {
+router.get('/:username/:transId/bayar', function(req, res) {
+
+})
+
+
+
+router.get('/:username/delete',middleware ,function(req, res) {
   Model.User.destroy({
     where : {
       username : req.params.username
@@ -172,7 +204,6 @@ router.get('/:username/delete', function(req, res) {
   .catch(err => {
     res.send(err)
   })
-
 })
 
 
