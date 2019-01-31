@@ -1,14 +1,17 @@
 const Telegraf = require('telegraf')
 const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
+const Model = require('../../models')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op;
 require('dotenv').config()
 
 const helpString = 'butuh bantuan? ini daftar perintah yang kamu bisa pakai\n/command --> menampilkan keyboard command\n/chatid --> untuk melihat chat id kamu\n/saldo --> untuk mengecek saldo kamu\n/tunggakan --> untuk melihat daftar tunggakan kamu\n/topup --> untuk menambah saldo kamu'
 
 const command = Markup.inlineKeyboard([
   Markup.callbackButton('lihat Chat Id', 'chatId'),
-  Markup.callbackButton('lihat saldo', 'saldo'),
-  Markup.callbackButton('lihat tunggakan', 'tunggakan'),
+  Markup.callbackButton('lihat total piutang', 'piutang'),
+  Markup.callbackButton('lihat total tunggakan', 'tunggakan'),
   Markup.callbackButton('bantuan', 'help'),
   Markup.callbackButton('close', 'delete')
 ], {
@@ -74,28 +77,47 @@ function startBot() {
   bot.launch()
 }
 
-function saldoBot(data){
-  bot.action('saldo', (ctx) => {
-    ctx.reply(`saldo kamu : ${ctx}`)
-      .then(() => {
-        sendCommand(ctx)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  })
-}
+// function saldoBot(data){
+//   bot.action('saldo', (ctx) => {
+//     ctx.reply(`saldo kamu : ${ctx}`)
+//       .then(() => {
+//         sendCommand(ctx)
+//       })
+//       .catch(err => {
+//         console.log(err)
+//       })
+//   })
+// }
 
 function tunggakanBot(data){
   bot.action('tunggakan', (ctx) => {
-    ctx.reply(`tunggakan kamu : ${data.hehe}`)
-      .then(() => {
-        sendCommand(ctx)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    Model.UserTransaction.findAll({
+      attributes : ['UserId', [Sequelize.fn('SUM', Sequelize.col
+      ('bill')), 'totalTunggakan']],
+      where : { 
+        UserId : data.id,
+        [Op.or] : {
+          status : 'pending',
+          status : 'active' 
+        }
+      },
+      group : ['UserId']
+    })
+    .then (dataTunggakan => { 
+      console.log(dataTunggakan)
+      return ctx.reply(`total tunggakan kamu : ${dataTunggakan[0].dataValues.totalTunggakan}`)
+    })
+    .then(() => {
+      sendCommand(ctx)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   })
+
+  function piutangBot(data) {
+    bot.action('piutang', )
+  }
 }
 
-module.exports = {startBot, saldoBot, tunggakanBot, botSendMessage};
+module.exports = {startBot, tunggakanBot, botSendMessage};

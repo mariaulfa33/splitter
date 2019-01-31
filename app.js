@@ -4,13 +4,11 @@ const session = require('express-session');
 const port = 3000;
 const app = express();
 const startBot = require('./helpers/telegram/telegramBot.js').startBot;
-const saldoBot = require('./helpers/telegram/telegramBot.js').saldoBot;
 const tunggakanBot = require('./helpers/telegram/telegramBot.js').tunggakanBot;
 const botSendMessage = require('./helpers/telegram/telegramBot.js').botSendMessage;
 
-// startBot();
-// saldoBot()
-// tunggakanBot()
+startBot();
+tunggakanBot({ id : 1});
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended : false}))

@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <%- include('./partials/autocomplete-style.ejs')%>
- <title> SPLITTER</title>
-<%- include('./partials/navbar-style.ejs')%>
+  <title> SPLITTER</title>
+  <%- include('./partials/navbar-style.ejs')%>
 </head>
+
 <body>
-<%- include('./partials/navbar-general.ejs', { session : user })%>
-<div class="w3-container">
-    <h2>WELCOME, <%=user.firstname%>! </h2>
-    <h3> your balance : Rp <%= user.balance%>,-</h3>
+  <%- include('./partials/navbar-general.ejs', { session : user })%>
+  <div class="w3-container" align="center">
+    <h2>WELCOME,
+      <%=user.firstname%>! </h2>
+    <h3> your balance : Rp
+      <%= user.balance%>,-</h3>
     <p><button class="w3-button w3-red" onclick="window.location.href='/<%=user.username%>/edit'"> Edit Profile</button></p>
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/transaction'">nalangin</button></p>
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/utang'">List Piutang</button></p>
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/piutang'">List Utang</button></p>
 
+
 </div>
   <%if(section == 'edit') { %>
-    <%- include('./partials/edit-user.ejs')%>
+  <%- include('./partials/edit-user.ejs')%>
   <%} else if(section == 'transaction') { %>
-    <%- include('./partials/transaction.ejs')%>
+  <%- include('./partials/transaction.ejs')%>
   <%}%>
 </body>
+
 </html>
