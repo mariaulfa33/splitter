@@ -1,9 +1,18 @@
 const router = require('express').Router()
 const Model = require('../../models')
+const middleware = require('../../helpers/middleware.js')
 
 //middleware
+// router.use((req,res,next) =>{
+//   if (req.session.user) {
+//     next();
+//   }
+//   else {
+//     res.redirect('/users/login');
+//   }
+// })
 
-router.get('/:username', function(req, res) {
+router.get('/:username', middleware, function (req, res) {
   //namnti bisa pake session aja
   let action = req.query.action || null
   Model.User.findOne({
@@ -76,7 +85,7 @@ router.post('/:username/topup', function(req, res) {
     })
   })
   .then(() => {
-    res.redirect('/maria33')
+    res.redirect(`/${user.username}`)
   })
   .catch(err => {
     res.redirect('/maria33?msg='+err.message)

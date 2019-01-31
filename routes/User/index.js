@@ -31,6 +31,7 @@ router.get('/login', function(req, res) {
 })
 
 router.post('/login', function(req, res) {
+  let dataUser = undefined;
   Model.User.findOne({
       where : {
         [Op.or]: [
@@ -47,12 +48,19 @@ router.post('/login', function(req, res) {
       if(data == undefined) {
         throw new Error('Email tidak terdaftar')
       } else {
+        dataUser = data
         return bcrypt.compare(req.body.password, data.password)
       }
     })
     .then(function(pass) {
       if(pass == true) {
-        res.redirect(`/maria33`) //pake sessionnya
+        req.session.user = {
+          id : dataUser.id,
+          username : dataUser.username,
+          email : dataUser.email,
+          chatId : dataUser.chatId
+        }
+        res.redirect(`/${dataUser.username}`) //pake sessionnya
       } else {
         throw new Error('password salah')
       }
@@ -61,5 +69,6 @@ router.post('/login', function(req, res) {
       res.redirect('/users/login?msg='+err)
     })
 })
+
 
 module.exports = router
