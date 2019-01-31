@@ -14,7 +14,7 @@ input{
   <%- include('./partials/navbar-style.ejs')%>
 </head>
 <body>
-<%- include('./partials/navbar-general.ejs')%>
+<%- include('./partials/navbar-general.ejs', {session : null})%>
 <div align="center">
 <h2>Login</h2>
 <form action="/users/login" method="POST">

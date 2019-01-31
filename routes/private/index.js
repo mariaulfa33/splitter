@@ -185,11 +185,15 @@ router.get('/:username/:transId/aktif', function(req, res) {
   })
 })
 
-
 router.get('/:username/:transId/bayar', function(req, res) {
 
 })
 
+
+router.get('/:username/logout', function(req,res) {
+  req.session.destroy()
+  res.redirect('/users/login')
+})
 
 
 router.get('/:username/delete',middleware ,function(req, res) {
