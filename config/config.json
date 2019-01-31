@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": null,
+    "database": "splitter_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": null,
+    "database": "splitter_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "oogbtmwevqwchk",
+    "password": "2217150d5749cb6364e26ca59eb74393deaa8b0aef908dab151d0def1b6ce1b1",
+    "database": "d32fu5icdio8sd",
+    "host": "ec2-23-21-171-25.compute-1.amazonaws.com",
+    "dialect": "postgres"
+  }
+}
