@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+<button onclick="goBack()">Go Back</button>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+<h2>List Piutang</h2>
+<div align="center">
+<table>
+  <tr>
+    <th>Nama Transaksi</th>
+    <th>Total Tagihan</th>
+    <th>Tanggal Transaksi</th>
+    <th>Status</th>
+  </tr>
+  <% data.forEach(transaksi => { %>
+    <tr>
+      <td><%=transaksi.name%></td>
+      <td><%=transaksi.price%></td>
+      <td><%=transaksi.createdAt%></td>
+      <% if (transaksi.status == false) { %>
+        <td><a href="/<%=username%>/<%=transaksi.id%>/utang">Ada Yang Ngutang</td>
+      <%} else { %>
+        <td>COMPLETED</td>
+      <%}%>
+    </tr>
+  <%})%>
+</table>
+</div>
+</body>
+
+</html>

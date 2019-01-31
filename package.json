@@ -1,0 +1,33 @@
+{
+  "name": "splitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariaulfa33/splitter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariaulfa33/splitter/issues"
+  },
+  "homepage": "https://github.com/mariaulfa33/splitter#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.3",
+    "chart.js": "^2.7.3",
+    "dotenv": "^6.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "pg": "^7.8.0",
+    "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0",
+    "telegraf": "^3.26.0"
+  }
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+    input{
+    margin: .4rem 0;
+    }
+
+    .note {
+        font-size: .8em;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        padding: 5px;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 100%;
+        background-color: rgb(87, 76, 76);
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        left: 110%;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>
+</head>
+<%- include('./partials/navbar-style.ejs')%>
+
+<body>
+    <%- include('./partials/navbar-general.ejs', {session : null})%>
+<h2>REGISTER</h2>
+<div align="center">
+<%= msg%>
+<form action="/users/register" method="POST">
+  First name:<br>
+  <input type="text" name="firstname">
+  <br>
+  Last name:<br>
+  <input type="text" name="lastname">
+  <br>
+  username:<br>
+  <input type="text" name="username">
+  <br>
+  Email:<br>
+  <input type="text" name="email">
+  <br>
+  chat Id : <br>
+  <input type="text" name="chatId">
+  <br>
+  password:<br>
+  <input type="password" name="password">
+  <br>
+  birthday:<br>
+  <input type="date" id="start" name="birthday"
+         value="2018-07-22"
+         min="1800-01-01" max="2018-12-31">
+  <br><br>
+  <input type="submit" value="register">
+
+</form>
+    </div>
+</body>
+
+</html>

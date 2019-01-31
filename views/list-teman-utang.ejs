@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+<button onclick="goBack()">Go Back</button>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+
+<h2>List Hutang</h2>
+
+<table>
+  <tr>
+    <th>Nama</th>
+    <th>Tagihan</th>
+    <th>Status</th>
+    <th>Terakhir Respond</th>
+    <th>Action</th>
+  </tr>
+  <% data.forEach(teman => { %>
+    <tr>
+      <td><%=teman.User.firstname%></td>
+      <td><%=teman.bill%></td>
+      <td><%=teman.status%></td>
+      <td><%=teman.updatedAt%></td>
+      <% if(getStatus(teman.status) == 'ingatkan') { %>
+        <td><a href="/<%=username%>/<%=transId%>/reminder/<%=teman.UserId%>"> ingatkan teman </a></td>
+      <%} else if (getStatus(teman.status) == 'konfirmasi') { %>
+<td> <a href="/<%=username%>/<%=transId%>/konfirmasi/<%=teman.Userid%>"> konfirmasi</a> </td>
+      <%} else { %>
+        <td></td>
+      <%} %>
+    </tr>
+  <%})%>
+</table>
+</body>
+</html>
