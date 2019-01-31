@@ -22,6 +22,20 @@ module.exports = (sequelize, DataTypes) => {
             reject(err)
           })
         })
+      },
+      beforeDestroy : (value) => {
+        return Promise.all([
+          sequelize.models.UserTransaction.destroy({
+            where : {
+              userId : value.id
+            }
+          }), 
+          sequelize.models.Transaction.destroy({
+            where : {
+              userId : value.id
+            }
+          })
+        ])
       }
     }
   });

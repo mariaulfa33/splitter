@@ -12,7 +12,6 @@ const botSendMessage = require('./helpers/telegram/telegramBot.js').botSendMessa
 // saldoBot()
 // tunggakanBot()
 
-
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended : false}))
 app.use(session({
