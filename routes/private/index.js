@@ -1,10 +1,20 @@
 const router = require('express').Router()
 const Model = require('../../models')
 const getStatus = require('../../helpers/getAction')
+const middleware = require('../../helpers/middleware.js')
+
 
 //middleware
+// router.use((req,res,next) =>{
+//   if (req.session.user) {
+//     next();
+//   }
+//   else {
+//     res.redirect('/users/login');
+//   }
+// })
 
-router.get('/:username', function(req, res) {
+router.get('/:username', middleware, function (req, res) {
   //namnti bisa pake session aja
   let action = req.query.action || null
   Model.User.findOne({
@@ -26,7 +36,7 @@ router.get('/:username', function(req, res) {
   })
 })
 
-router.get('/:username/edit', function(req, res) {
+router.get('/:username/edit', middleware,function(req, res) {
   // res.render('')
   Model.User.findOne({
     where : {
@@ -46,7 +56,7 @@ router.get('/:username/edit', function(req, res) {
   })
 })
 
-router.post('/:username/edit/:id', function(req, res) {
+router.post('/:username/edit/:id', middleware,function(req, res) {
   Model.User.update({
     firstname : req.body.firstname,
     lastname : req.body.lastname,
@@ -66,7 +76,7 @@ router.post('/:username/edit/:id', function(req, res) {
 })
 
 
-router.get('/:username/transaction', function(req, res) {
+router.get('/:username/transaction', middleware,function(req, res) {
   Model.User.findAll()
   .then(data => {
     data = data.map(data => data.dataValues.username)
@@ -77,7 +87,7 @@ router.get('/:username/transaction', function(req, res) {
   })
 })
 
-router.post('/:username/transaction', function(req, res) {
+router.post('/:username/transaction', middleware,function(req, res) {
   //bikin transaksi
   let transId = null
   Model.Transaction.create({
@@ -125,7 +135,7 @@ router.post('/:username/transaction', function(req, res) {
   })
 })
 
-router.get('/:username/utang', function(req, res) {
+router.get('/:username/utang', middleware,function(req, res) {
   Model.Transaction.findAll({
     where : {
       UserId : 1

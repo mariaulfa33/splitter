@@ -1,22 +1,49 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<style>
-
-input{
+    <style>
+    input{
     margin: .4rem 0;
-}
+    }
 
-.note {
-    font-size: .8em;
-}
-  </style>
-  <%- include('./partials/navbar-style.ejs')%>
+    .note {
+        font-size: .8em;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        padding: 5px;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 100%;
+        background-color: rgb(87, 76, 76);
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        left: 110%;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>
 </head>
+<%- include('./partials/navbar-style.ejs')%>
+
 <body>
     <%- include('./partials/navbar-general.ejs')%>
 <h2>REGISTER</h2>
-
+<div align="center">
 <form action="/users/register" method="POST">
   First name:<br>
   <input type="text" name="firstname">
@@ -44,6 +71,7 @@ input{
   <input type="submit" value="register">
 
 </form>
-
+    </div>
 </body>
+
 </html>
