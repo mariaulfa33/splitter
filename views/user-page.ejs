@@ -7,16 +7,8 @@
 </head>
 <body>
 <div class="w3-container">
-    <h2>WELCOME, ! </h2>
+    <h2>WELCOME, <%=user.firstname%>! </h2>
     <h3> your balance : Rp <%= user.balance%>,-</h3>
-    <%if(action == 'topup') {%>
-      <form action="/<%=user.username%>/topup" method="POST">
-      <p><input class="w3-button w3-red" type="submit" value="Top Up"></p>
-      <input type="text" name="balance">
-    </form>
-    <%} else {%>
-      <p><button class="w3-button w3-red" onclick="window.location.href='/<%=user.username%>?action=topup'"> Top Up</button></p>
-    <%}%>
     <p><button class="w3-button w3-red" onclick="window.location.href='/<%=user.username%>/edit'"> Edit Profile</button></p>
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/transaction'">nalangin</button></p>
     <p><button class="w3-button w3-orange" onclick="window.location.href='/<%=user.username%>/utang'">List Utang</button></p>
@@ -26,6 +18,5 @@
   <%} else if(section == 'transaction') { %>
     <%- include('./partials/transaction.ejs')%>
   <%}%>
-  
 </body>
 </html>

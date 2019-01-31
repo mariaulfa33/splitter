@@ -16,7 +16,8 @@ router.post('/register', function(req, res) {
     username : req.body.username,
     email : req.body.email,
     password : req.body.password,
-    birthday : req.body.birthday
+    birthday : req.body.birthday,
+    chatId : req.body.chatId
   })
   .then(() => {
     res.redirect('/')
@@ -52,7 +53,7 @@ router.post('/login', function(req, res) {
     })
     .then(function(pass) {
       if(pass == true) {
-        res.redirect(`/maria33`) //pake sessionnya
+        res.redirect(`/mariaulfa33`) //pake sessionnya
       } else {
         throw new Error('password salah')
       }

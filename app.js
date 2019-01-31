@@ -6,7 +6,9 @@ const startBot = require('./helpers/telegram/telegramBot.js').startBot;
 const saldoBot = require('./helpers/telegram/telegramBot.js').saldoBot;
 const tunggakanBot = require('./helpers/telegram/telegramBot.js').tunggakanBot;
 
-startBot();
+// startBot();
+// saldoBot()
+// tunggakanBot()
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended : false}))
