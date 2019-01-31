@@ -21,6 +21,10 @@ function sendCommand(ctx) {
   return ctx.reply('ada lagi yang bisa saya bantu?', Extra.markup(command))
 }
 
+function botSendMessage(chatId, message){
+  bot.telegram.sendMessage(chatId, message)
+}
+
 function startBot() {
   bot.start((ctx) => {
     console.log('sombody press start!')
@@ -94,4 +98,4 @@ function tunggakanBot(data){
   })
 }
 
-module.exports = {startBot, saldoBot, tunggakanBot};
+module.exports = {startBot, saldoBot, tunggakanBot, botSendMessage};
