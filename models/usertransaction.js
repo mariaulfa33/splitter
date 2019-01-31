@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       return 'permintaan tagihan ditolak'
     } else if(status == 'paid') {
       return 'sudah terbayar'
-    } else if(status == 'confirmed') {
+    } else if(status == 'delete') {
       return 'selesai'
     }
   }
