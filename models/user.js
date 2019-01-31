@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     birthday: DataTypes.DATE,
-    balance: DataTypes.INTEGER
+    balance: DataTypes.INTEGER,
+    chatId: DataTypes.STRING
   }, {
     hooks : {
       beforeCreate : (value) => {
