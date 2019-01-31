@@ -3,17 +3,6 @@ const Model = require('../../models')
 const getStatus = require('../../helpers/getAction')
 const middleware = require('../../helpers/middleware.js')
 
-
-//middleware
-// router.use((req,res,next) =>{
-//   if (req.session.user) {
-//     next();
-//   }
-//   else {
-//     res.redirect('/users/login');
-//   }
-// })
-
 router.get('/:username', middleware, function (req, res) {
   //namnti bisa pake session aja
   console.log(req.session)
@@ -128,7 +117,7 @@ router.post('/:username/transaction', middleware,function(req, res) {
   })
   .then(() => {
     //berhasil! tinggal kirim message lewat chat bot
-    res.redirect('/mariaulfa33')
+    res.redirect(`/${req.session.username}`)
   })
   .catch(err => {
     res.send(err)
