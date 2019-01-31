@@ -7,8 +7,8 @@ const startBot = require('./helpers/telegram/telegramBot.js').startBot;
 const tunggakanBot = require('./helpers/telegram/telegramBot.js').tunggakanBot;
 const botSendMessage = require('./helpers/telegram/telegramBot.js').botSendMessage;
 
-startBot();
-tunggakanBot({ id : 1});
+// startBot();
+// tunggakanBot({ id : 1});
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended : false}))

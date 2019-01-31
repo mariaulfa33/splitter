@@ -47,10 +47,11 @@ router.post('/:username/edit/:id', middleware,function(req, res) {
     firstname : req.body.firstname,
     lastname : req.body.lastname,
     email : req.body.email,
-    username : req.body.username
+    username : req.body.username,
+    chatId : req.body.chatId
   }, {
     where : {
-      username : req.params.id
+      username : req.params.username
     }
   })
   .then(() => {
@@ -138,9 +139,10 @@ router.get('/:username/piutang', middleware,function(req, res) {
   Model.UserTransaction.findAll({
     where : {
       UserId : req.session.user.id
-    }, include : [{model : Model.Transaction}]
+    }, include : [{model : Model.Transaction, include : [{model : Model.User}]}]
   })
   .then(data => {
+    // res.send(data)
     res.render('list-utang.ejs', {data, username: req.session.user.username})
   })
   .catch(err => {

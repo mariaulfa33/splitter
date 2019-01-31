@@ -8,26 +8,24 @@
       border-collapse: collapse;
       width: 100%;
     }
-
     td,
     th {
       border: 1px solid #dddddd;
       text-align: left;
       padding: 8px;
     }
-
     tr:nth-child(even) {
       background-color: #dddddd;
     }
   </style>
 </head>
-
 <body>
 <h2>HTML Table</h2>
 <div align="center">
 <table>
   <tr>
     <th>Nama Transaksi</th>
+    <th>Nama Teman</th>
     <th>Total Tagihan</th>
     <th>Deadline Transaksi</th>
     <th>Status</th>
@@ -36,6 +34,7 @@
   <% data.forEach(transaksi => { %>
     <tr>
       <td><%=transaksi.Transaction.name%></td>
+      <td><%=transaksi.Transaction.User.firstname%></td>
       <td><%=transaksi.bill%></td>
       <td><%=transaksi.Transaction.deadline%></td>
       <td><%=transaksi.status%></td>
@@ -45,7 +44,7 @@
         <td><a href="<%=transaksi.id%>/bayar"> bayar </a> </td>
       <%} else { %>
         <td>bebas hutang</td>
-     <% }%>
+     <%}%>
     </tr>
   <%})%>
 </table>

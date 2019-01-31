@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     birthday: DataTypes.DATE,
-    chatId: DataTypes.STRING
+    chatId : DataTypes.STRING
   }, {
     hooks : {
       beforeCreate : (value) => {
