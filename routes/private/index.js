@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const Model = require('../../models')
+const getStatus = require('../../helpers/getAction')
 const middleware = require('../../helpers/middleware.js')
+
 
 //middleware
 // router.use((req,res,next) =>{
@@ -34,7 +36,7 @@ router.get('/:username', middleware, function (req, res) {
   })
 })
 
-router.get('/:username/edit', function(req, res) {
+router.get('/:username/edit', middleware,function(req, res) {
   // res.render('')
   Model.User.findOne({
     where : {
@@ -54,12 +56,16 @@ router.get('/:username/edit', function(req, res) {
   })
 })
 
-router.post('/:username/edit', function(req, res) {
+router.post('/:username/edit/:id', middleware,function(req, res) {
   Model.User.update({
     firstname : req.body.firstname,
     lastname : req.body.lastname,
     email : req.body.email,
     username : req.body.username
+  }, {
+    where : {
+      username : req.params.id
+    }
   })
   .then(() => {
     res.redirect(`/${req.body.username}`)
@@ -69,30 +75,8 @@ router.post('/:username/edit', function(req, res) {
   })
 })
 
-router.post('/:username/topup', function(req, res) {
-  Model.User.findOne({
-    where : {
-      username : req.params.username
-    }
-  })
-  .then(user => {
-    return Model.User.update({
-      balance : (user.dataValues.balance + Number(req.body.balance))
-    }, {
-      where : {
-        username : req.params.username
-      }
-    })
-  })
-  .then(() => {
-    res.redirect(`/${user.username}`)
-  })
-  .catch(err => {
-    res.redirect('/maria33?msg='+err.message)
-  })
-})
 
-router.get('/:username/transaction', function(req, res) {
+router.get('/:username/transaction', middleware,function(req, res) {
   Model.User.findAll()
   .then(data => {
     data = data.map(data => data.dataValues.username)
@@ -103,14 +87,14 @@ router.get('/:username/transaction', function(req, res) {
   })
 })
 
-router.post('/:username/transaction', function(req, res) {
+router.post('/:username/transaction', middleware,function(req, res) {
   //bikin transaksi
   let transId = null
   Model.Transaction.create({
     name : req.body.name,
     price : req.body.price,
     deadline : req.body.deadline,
-    UserId : 2 //pake session
+    UserId : 1 //pake session
   })
 
   .then(transaction => {
@@ -144,23 +128,44 @@ router.post('/:username/transaction', function(req, res) {
   })
   .then(() => {
     //berhasil! tinggal kirim message lewat chat bot
-    res.redirect('/maria33')
+    res.redirect('/mariaulfa33')
   })
   .catch(err => {
     res.send(err)
   })
 })
 
-router.get('/:username/utang', function(req, res) {
+router.get('/:username/utang', middleware,function(req, res) {
   Model.Transaction.findAll({
     where : {
-      UserId : 2
+      UserId : 1
     }
   })
   .then(data => {
-    res.send(data)
+   
+    res.render('list-utang.ejs', {data})
   })
   .catch(err => {
+    res.send(err)
+  })
+})
+
+router.get('/:username/:idTrans/utang', function(req, res) {
+  Model.UserTransaction.findAll({
+    where : {
+      TransactionId : req.params.idTrans
+    },include : [{model : Model.User}]
+  })
+  .then(data => {
+   
+    let newData = data.map(tran => {
+      tran.dataValues.status = tran.getStatus(tran.dataValues.status)
+      return tran
+    })
+    res.render('list-teman-utang', {data : newData, getStatus})
+  })
+  .catch(err => {
+    console.log(err)
     res.send(err)
   })
 })

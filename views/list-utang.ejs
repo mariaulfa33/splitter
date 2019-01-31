@@ -24,23 +24,30 @@
 
 <body>
 
-  <h2>HTML Table</h2>
-
-  <div align="center">
-    <table>
-      <tr>
-        <th>Company</th>
-        <th>Contact</th>
-        <th>Country</th>
-      </tr>
-      <tr>
-        <td>Alfreds Futterkiste</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-      </tr>
-    </table>
-  </div>
-
+<<<<<<< HEAD
+<h2>HTML Table</h2>
+<div align="center">
+<table>
+  <tr>
+    <th>Nama Transaksi</th>
+    <th>Total Tagihan</th>
+    <th>Tanggal Transaksi</th>
+    <th>Status</th>
+  </tr>
+  <% data.forEach(transaksi => { %>
+    <tr>
+      <td><%=transaksi.name%></td>
+      <td><%=transaksi.price%></td>
+      <td><%=transaksi.createdAt%></td>
+      <% if (transaksi.status == false) { %>
+        <td><a href="/mariulfa33/<%=transaksi.id%>/utang">Ada Yang Ngutang</td>
+      <%} else { %>
+        <td>COMPLETED</td>
+      <%}%>
+    </tr>
+  <%})%>
+</table>
+</div>
 </body>
 
 </html>

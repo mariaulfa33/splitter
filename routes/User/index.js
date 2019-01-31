@@ -16,7 +16,8 @@ router.post('/register', function(req, res) {
     username : req.body.username,
     email : req.body.email,
     password : req.body.password,
-    birthday : req.body.birthday
+    birthday : req.body.birthday,
+    chatId : req.body.chatId
   })
   .then(() => {
     res.redirect('/')

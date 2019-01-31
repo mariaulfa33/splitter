@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     bill: DataTypes.INTEGER,
     status: {
       type:   DataTypes.ENUM,
-      values: ['active', 'pending', 'deleted', 'paid']
+      values: ['active', 'pending', 'deleted', 'paid', 'confirmed']
     }
   }, {});
   UserTransaction.associate = function(models) {
@@ -15,5 +15,19 @@ module.exports = (sequelize, DataTypes) => {
     UserTransaction.belongsTo(models.User)
    
   };
+
+  UserTransaction.prototype.getStatus = function(status) {
+    if(status == 'active') {
+      return 'permintaan tagihan diterima'
+    } else if(status == 'pending') {
+      return 'menunggu konfrimasi'
+    } else if(status == 'deleted') {
+      return 'permintaan tagihan ditolak'
+    } else if(status == 'paid') {
+      return 'sudah terbayar'
+    } else if(status == 'confirmed') {
+      return 'selesai'
+    }
+  }
   return UserTransaction;
 };

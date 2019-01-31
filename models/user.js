@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     birthday: DataTypes.DATE,
-    balance: DataTypes.INTEGER,
     chatId: DataTypes.STRING
   }, {
     hooks : {

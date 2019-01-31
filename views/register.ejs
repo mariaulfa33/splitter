@@ -42,42 +42,35 @@
 
 <body>
     <%- include('./partials/navbar-general.ejs')%>
-    <div align="center">
-        <h2>REGISTER</h2>
+<h2>REGISTER</h2>
+<div align="center">
+<form action="/users/register" method="POST">
+  First name:<br>
+  <input type="text" name="firstname">
+  <br>
+  Last name:<br>
+  <input type="text" name="lastname">
+  <br>
+  username:<br>
+  <input type="text" name="username">
+  <br>
+  Email:<br>
+  <input type="text" name="email">
+  <br>
+  chat Id : <br>
+  <input type="text" name="chatId">
+  <br>
+  password:<br>
+  <input type="password" name="password">
+  <br>
+  birthday:<br>
+  <input type="date" id="start" name="birthday"
+         value="2018-07-22"
+         min="1800-01-01" max="2018-12-31">
+  <br><br>
+  <input type="submit" value="register">
 
-        <form action="/users/register" method="POST">
-            First name:<br>
-            <input type="text" name="firstname" placeholder="your firstname ...">
-            <br>
-            Last name:
-            <br>
-            <input type="text" name="lastname" placeholder="your lastname ...">
-            <br>
-            username:
-            <br>
-            <input type="text" name="username" placeholder="your soon to be username ...">
-            <br>
-            Email:
-            <br>
-            <input type="text" name="email" placeholder="your email ...">
-            <br>
-            Chat Id:
-            <br>
-            <div class="tooltip">
-            <input type="text" name="chatId" placeholder="your telegram chat Id ...">
-            <span class="tooltiptext">- add @splitter_hacktiv8 <br>- tekan atau ketik /start <br>- masukan chat Id yang dikirim oleh @splitter_hacktiv8</span>
-            </div>      
-            <br>
-            password:
-            <br>
-            <input type="password" name="password" placeholder="your password ...">
-            <br>
-            birthday:<br>
-            <input type="date" id="start" name="birthday" value="2018-07-22" min="1800-01-01" max="2018-12-31">
-            <br><br>
-            <input type="submit" value="register">
-
-        </form>
+</form>
     </div>
 </body>
 

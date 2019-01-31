@@ -8,8 +8,10 @@ const saldoBot = require('./helpers/telegram/telegramBot.js').saldoBot;
 const tunggakanBot = require('./helpers/telegram/telegramBot.js').tunggakanBot;
 const botSendMessage = require('./helpers/telegram/telegramBot.js').botSendMessage;
 
-startBot();
-// botSendMessage(203283627,'test betch')
+// startBot();
+// saldoBot()
+// tunggakanBot()
+
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended : false}))
