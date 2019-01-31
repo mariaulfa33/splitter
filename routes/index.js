@@ -5,7 +5,7 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const Model = require('../models')
 router.get('/', function(req, res) {
-  res.render('home')
+  res.render('home', {session : null})
 })
 
 //paling banyak ngutangin
@@ -38,7 +38,7 @@ router.get('/dermawan', function(req, res) {
       label.push(user.dataValues.username)
       total.push(user.dataValues.totalBills)
     })
-    res.render('chart', {label, total, predikat : 'TERBAIK'})
+    res.render('chart', {label, total, predikat : 'TERBAIK', comment : 'NGUTANGIN', session : null})
   })
   .catch(err => {
     res.send(err)
@@ -91,7 +91,7 @@ router.get('/utangers', function(req, res) {
       label.push(user.dataValues.username)
       total.push(user.dataValues.totalBills)
     })
-    res.render('chart', {label, total, predikat : 'BELUM BAYAR', comment : 'BANYAK UTANG'})
+    res.render('chart', {label, total, predikat : 'BELUM BAYAR', comment : 'BANYAK UTANG', session : null})
   })
   .catch(err => {
     res.send(err)
