@@ -162,7 +162,8 @@ router.get('/:username/:idTrans/utang', middleware,function(req, res) {
       tran.dataValues.status = tran.getStatus(tran.dataValues.status)
       return tran
     })
-    res.render('list-teman-utang', {data : newData, getStatus, id: req.session.user.id})
+    // res.send(newData)
+    res.render('list-teman-utang', {data : newData, getStatus, id: req.session.user.id, username : req.session.user.username})
   })
   .catch(err => {
     res.send(err)
@@ -186,7 +187,19 @@ router.get('/:username/:transId/aktif', function(req, res) {
 })
 
 router.get('/:username/:transId/bayar', function(req, res) {
-
+  Model.UserTransaction.update({
+    status : 'paid'
+  }, {
+    where : {
+      id : Number(req.params.transId)
+    }
+  })
+  .then(() => {
+    res.redirect(`/${req.session.user.username}/piutang`)
+  })
+  .catch(err => {
+    res.send(err)
+  })
 })
 
 
@@ -207,6 +220,29 @@ router.get('/:username/delete',middleware ,function(req, res) {
   })
   .catch(err => {
     res.send(err)
+  })
+})
+
+router.get('/:username/konfirmasi/:transId', function(req, res) {
+  Model.UserTransaction.update({
+    status : 'delete'
+  }, {
+    where : {
+      id : Number(req.params.transId)
+    }, individualHooks : true
+  })
+  .then(() => {
+    return Model.UserTransaction.findByPk(Number(req.params.transId))
+  })
+  .then((data) => {
+    return Model.Transaction.checkAll(Number(data.dataValues.TransactionId))
+  })
+  .then(() => {
+    res.redirect(`/${req.session.user.username}`)
+  })
+  .catch(err => {
+    res.send(err)
+    console.log(err)
   })
 })
 

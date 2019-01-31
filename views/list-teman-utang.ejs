@@ -38,9 +38,9 @@ tr:nth-child(even) {
       <td><%=teman.status%></td>
       <td><%=teman.updatedAt%></td>
       <% if(getStatus(teman.status) == 'ingatkan') { %>
-        <td><a href="/reminder"> ingatkan teman </a></td>
+        <td><a href="reminder/<%=teman.chatId%>"> ingatkan teman </a></td>
       <%} else if (getStatus(teman.status) == 'konfirmasi') { %>
-        <td> <a href="/konfirmasi"> konfirmasi</a> </td>
+        <td> <a href="/<%=username%>/konfirmasi/<%=teman.id%>"> konfirmasi</a> </td>
       <%} else { %>
         <td></td>
       <%} %>
