@@ -6,10 +6,16 @@ const app = express();
 const startBot = require('./helpers/telegram/telegramBot.js').startBot;
 const tunggakanBot = require('./helpers/telegram/telegramBot.js').tunggakanBot;
 const botSendMessage = require('./helpers/telegram/telegramBot.js').botSendMessage;
+const piutangBot = require('./helpers/telegram/telegramBot.js').piutangBot;
+const changeToCurrency = require('./helpers/changeToCurrency.js');
 
 startBot();
-tunggakanBot({ id : 1});
+setInterval( function(){
+  tunggakanBot();
+  piutangBot()
+}, 1000)
 
+app.locals.changeToCurrency = changeToCurrency;
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended : false}))
 app.use(session({

@@ -3,7 +3,7 @@ const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
 const Model = require('../../models')
 const Sequelize = require('sequelize')
-const Op = Sequelize.Op;
+const changeToCurrency = require('../../helpers/changeToCurrency.js')
 require('dotenv').config()
 
 const helpString = 'butuh bantuan? ini daftar perintah yang kamu bisa pakai\n/command --> menampilkan keyboard command\n/chatid --> untuk melihat chat id kamu\n/saldo --> untuk mengecek saldo kamu\n/tunggakan --> untuk melihat daftar tunggakan kamu\n/topup --> untuk menambah saldo kamu'
@@ -77,47 +77,117 @@ function startBot() {
   bot.launch()
 }
 
-// function saldoBot(data){
-//   bot.action('saldo', (ctx) => {
-//     ctx.reply(`saldo kamu : ${ctx}`)
-//       .then(() => {
-//         sendCommand(ctx)
-//       })
-//       .catch(err => {
-//         console.log(err)
-//       })
-//   })
-// }
 
-function tunggakanBot(data){
+function tunggakanBot(){
+  let dataTransaksi = undefined;
+  let ctxs = undefined
+  let result = `list tunggakan kamu:\n`;
   bot.action('tunggakan', (ctx) => {
-    Model.UserTransaction.findAll({
-      attributes : ['UserId', [Sequelize.fn('SUM', Sequelize.col
-      ('bill')), 'totalTunggakan']],
-      where : { 
-        UserId : data.id,
-        [Op.or] : {
-          status : 'pending',
-          status : 'active' 
+    Model.User.findOne({
+      where: {
+        chatId: String(ctx.update.callback_query.from.id)
+      }
+    })
+    .then( dataUser => {
+      return Model.UserTransaction.findAll({
+        where : { 
+          UserId : dataUser.id
         }
-      },
-      group : ['UserId']
+      })
     })
-    .then (dataTunggakan => { 
-      console.log(dataTunggakan)
-      return ctx.reply(`total tunggakan kamu : ${dataTunggakan[0].dataValues.totalTunggakan}`)
+    .then( dataTransaksi => {
+      let newTrans = dataTransaksi.map(dataUser => {
+        return new Promise ((resolve, reject) => {
+          dataUser.getTransaction()
+          .then(data => {
+            dataUser.dataValues.transaction = data.dataValues.name
+            resolve(dataUser)
+          })
+          .catch(err => {
+            reject(err)
+          })
+        })
+      })
+      return Promise.all(newTrans)
     })
-    .then(() => {
-      sendCommand(ctx)
+    .then(data => {
+      console.log(data)
+      dataTransaksi = data;
+      return Model.User.findOne({
+        where : { 
+          id : dataTransaksi[0].UserId
+        }
+      })
+    })
+    .then( dataPengutang => {
+      let count = 1;
+      console.log(dataPengutang,'========')
+      dataTransaksi.forEach( element => {
+        result += `${count}. ${element.dataValues.transaction} sebesar ${element.bill} kepada ${dataPengutang.username}`
+        count++;
+      })
+      ctx.reply(result);
     })
     .catch(err => {
       console.log(err)
     })
   })
-
-  function piutangBot(data) {
-    bot.action('piutang', )
-  }
 }
 
-module.exports = {startBot, tunggakanBot, botSendMessage};
+function piutangBot() {
+  let dataTransaksi = undefined;
+  let result = `list piutang kamu:\n`;
+  bot.action('piutang', (ctx) => {
+    Model.User.findOne({
+      where: {
+        chatId: String(ctx.update.callback_query.from.id)
+      }
+    })
+    .then(dataUser => {
+      return Model.UserTransaction.findAll({
+        where: {
+          UserId: dataUser.id
+        }
+      })
+    })
+    .then(dataTransaksi => {
+      let newTrans = dataTransaksi.map(dataUser => {
+        return new Promise((resolve, reject) => {
+          dataUser.getTransaction()
+            .then(data => {
+              dataUser.dataValues.transaction = data.dataValues.name
+              resolve(dataUser)
+            })
+            .catch(err => {
+              reject(err)
+            })
+        })
+      })
+      return Promise.all(newTrans)
+    })
+    .then(data => {
+      console.log(data)
+      dataTransaksi = data;
+      return Model.User.findOne({
+        where: {
+          id: dataTransaksi[0].UserId
+        }
+      })
+    })
+    .then(dataPengutang => {
+      let count = 1;
+      console.log(dataPengutang, '========')
+      dataTransaksi.forEach(element => {
+        result += `${count}. ${element.dataValues.transaction} sebesar ${element.bill} kepada ${dataPengutang.username}`
+        count++;
+      })
+      ctx.reply(result);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  })
+}
+
+
+module.exports = {startBot, tunggakanBot, botSendMessage, piutangBot};
