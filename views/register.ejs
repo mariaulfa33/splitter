@@ -41,7 +41,7 @@
 <%- include('./partials/navbar-style.ejs')%>
 
 <body>
-    <%- include('./partials/navbar-general.ejs')%>
+    <%- include('./partials/navbar-general.ejs', {session : null})%>
 <h2>REGISTER</h2>
 <div align="center">
 <form action="/users/register" method="POST">

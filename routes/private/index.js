@@ -4,8 +4,6 @@ const getStatus = require('../../helpers/getAction')
 const middleware = require('../../helpers/middleware.js')
 
 router.get('/:username', middleware, function (req, res) {
-  //namnti bisa pake session aja
-  // console.log(req.session)
   let action = req.query.action || null
   Model.User.findOne({
     where : {
@@ -13,7 +11,6 @@ router.get('/:username', middleware, function (req, res) {
     }
   })
   .then(user => {
-    // res.send(user)
     if(user !== null) {
       res.render('user-page', {user, section : null, action})
     } else {
@@ -210,6 +207,15 @@ router.get('/:username/delete',middleware ,function(req, res) {
   })
 })
 
+router.get('/:username/:transId/reminder/', (req,res) => {
+  Model.User.findByPk(req.params.transId)
+  .then( data => {
+    bot.sendMessage(data.chatId, `${req.params.username} meminta anda untuk membayar hutang anda`)
+  })
+  .catch( err => {
+    res.send(`error ${err}`)
+  })
+})
 
 
 module.exports = router
