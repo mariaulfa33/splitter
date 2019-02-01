@@ -47,7 +47,7 @@ tr:nth-child(even) {
       <% if(getStatus(teman.status) == 'ingatkan') { %>
         <td><a href="/<%=username%>/<%=transId%>/reminder/<%=teman.UserId%>"> ingatkan teman </a></td>
       <%} else if (getStatus(teman.status) == 'konfirmasi') { %>
-<td> <a href="/<%=username%>/<%=transId%>/konfirmasi/<%=teman.Userid%>"> konfirmasi</a> </td>
+<td> <a href="/<%=username%>/konfirmasi/<%=teman.UserId%>"> konfirmasi</a> </td>
       <%} else { %>
         <td></td>
       <%} %>
